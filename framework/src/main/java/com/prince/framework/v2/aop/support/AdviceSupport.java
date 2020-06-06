@@ -1,9 +1,9 @@
 package com.prince.framework.v2.aop.support;
 
 import com.prince.framework.v2.aop.aspsct.AfterReturningAdviceInterceptor;
-import com.prince.framework.v2.aop.aspsct.AspectJAfterThrowingAdvice;
+import com.prince.framework.v2.aop.aspsct.AspectAfterThrowingAdvice;
 import com.prince.framework.v2.aop.aspsct.MethodBeforeAdviceInterceptor;
-import com.prince.framework.v2.aop.config.AOPConfig;
+import com.prince.framework.v2.aop.config.AopConfig;
 
 import java.lang.reflect.Method;
 import java.util.HashMap;
@@ -20,92 +20,74 @@ import java.util.regex.Pattern;
  * @date 2020/5/25 18:10
  */
 public class AdviceSupport {
-    private AOPConfig config;
+    private AopConfig config;
     private Object target;
-    private Class<?> targetClass;
+    private Class targetClass;
     private Pattern pointCutClassPattern;
 
-    private Map<Method,List<Object>> methodCache = new HashMap<Method,List<Object>>();
+    private Map<Method,List<Object>> methodCache;
 
-    public AdviceSupport(AOPConfig aopConfig) {
-        this.config = aopConfig;
+    public AdviceSupport(AopConfig config) {
+        this.config = config;
     }
 
-    private void parse(){
+    //解析配置文件的方法
+    private void parse() {
+
+        //把Spring的Excpress变成Java能够识别的正则表达式
         String pointCut = config.getPointCut()
-                .replaceAll("\\.","\\\\.")
-                .replaceAll("\\\\.\\*",".*")
-                .replaceAll("\\(","\\\\(")
-                .replaceAll("\\)","\\\\)");
-        //1.方法的修饰符和返回值
+                .replaceAll("\\.", "\\\\.")
+                .replaceAll("\\\\.\\*", ".*")
+                .replaceAll("\\(", "\\\\(")
+                .replaceAll("\\)", "\\\\)");
 
-        //2.类名
 
-        //3.方法的名字和形参列表
+        //保存专门匹配Class的正则
+        String pointCutForClassRegex = pointCut.substring(0, pointCut.lastIndexOf("\\(") - 4);
+        pointCutClassPattern = Pattern.compile("class " + pointCutForClassRegex.substring(pointCutForClassRegex.lastIndexOf(" ") + 1));
 
-        String pointCutForClassRegex = pointCut.substring(0,(pointCut.lastIndexOf("\\(") - 4 ));
-        pointCutClassPattern = Pattern.compile("class" + pointCutForClassRegex.substring(pointCutForClassRegex.indexOf(" ") + 1));
 
+        //享元的共享池
         methodCache = new HashMap<Method, List<Object>>();
-
         //保存专门匹配方法的正则
         Pattern pointCutPattern = Pattern.compile(pointCut);
-
-        try {
-            Class<?> aspectClass = Class.forName(this.config.getAspectClass());
+        try{
+            Class aspectClass = Class.forName(this.config.getAspectClass());
             Map<String,Method> aspectMethods = new HashMap<String, Method>();
             for (Method method : aspectClass.getMethods()) {
                 aspectMethods.put(method.getName(),method);
             }
 
-            //封装Advice
-
+            Method[] methods = this.targetClass.getMethods();
             for (Method method : this.targetClass.getMethods()) {
                 String methodString = method.toString();
                 if(methodString.contains("throws")){
-                    methodString = methodString.substring(0,methodString.indexOf("throws")).trim();
+                    methodString = methodString.substring(0,methodString.lastIndexOf("throws")).trim();
                 }
 
                 Matcher matcher = pointCutPattern.matcher(methodString);
                 if(matcher.matches()){
-
-                    //                    Map<String,GPAdvice> advices = new HashMap<String, GPAdvice>();
                     List<Object> advices = new LinkedList<Object>();
 
                     if(!(null == config.getAspectBefore() || "".equals(config.getAspectBefore()))){
-//                        advices.put("before",new GPAdvice(,));
                         advices.add(new MethodBeforeAdviceInterceptor(aspectClass.newInstance(),aspectMethods.get(config.getAspectBefore())));
                     }
                     if(!(null == config.getAspectAfter() || "".equals(config.getAspectAfter()))){
-//                        advices.put("after",new GPAdvice(aspectClass.newInstance(),aspectMethods.get(config.getAspectAfter())));
                         advices.add(new AfterReturningAdviceInterceptor(aspectClass.newInstance(),aspectMethods.get(config.getAspectAfter())));
                     }
                     if(!(null == config.getAspectAfterThrow() || "".equals(config.getAspectAfterThrow()))){
-//                        GPAdvice advice = new GPAdvice(aspectClass.newInstance(),aspectMethods.get(config.getAspectAfterThrow()));
-                        AspectJAfterThrowingAdvice advice = new AspectJAfterThrowingAdvice(aspectClass.newInstance(),aspectMethods.get(config.getAspectAfterThrow()));
+                        AspectAfterThrowingAdvice advice = new AspectAfterThrowingAdvice(aspectClass.newInstance(),aspectMethods.get(config.getAspectAfterThrow()));
                         advices.add(advice);
                         advice.setThrowName(config.getAspectAfterThrowingName());
                     }
 
                     //跟目标代理类的业务方法和Advices建立一对多个关联关系，以便在Porxy类中获得
                     methodCache.put(method,advices);
-//                    Map<String,Advice> advices = new HashMap<String, Advice>();
-
-//                    if(null == config.getAspectBefore() || "".equals(config.getAspectBefore())){
-//                        advices.put("before",new Advice(aspectClass.newInstance(),aspectMethods.get(config.getAspectBefore())));
-//                    }
-//                    if(null == config.getAspectAfter() || "".equals(config.getAspectAfter())){
-//                        advices.put("after",new Advice(aspectClass.newInstance(),aspectMethods.get(config.getAspectAfter())));
-//                    }
-//                    if(null == config.getAspectAfterThrow() || "".equals(config.getAspectAfterThrow())){
-//                        Advice advice = new Advice(aspectClass.newInstance(),aspectMethods.get(config.getAspectAfterThrow()));
-//                        advice.setThrowName(this.config.getAspectAfterThrowingName());
-//                        advices.put("afterThrow",advice);
-//                    }
-//                    methodCache.put(method,advices);
                 }
             }
-        } catch (Exception e) {
+
+
+        }catch(Exception e){
             e.printStackTrace();
         }
 
@@ -128,11 +110,8 @@ public class AdviceSupport {
 
     //给ApplicationContext首先IoC中的对象初始化时调用，决定要不要生成代理类的逻辑
     public boolean pointCutMath() {
+        System.out.println(this.targetClass.toString());
         return pointCutClassPattern.matcher(this.targetClass.toString()).matches();
-    }
-
-    public void setTarget(Object target) {
-        this.target = target;
     }
 
     public void setTargetClass(Class<?> targetClass) {
@@ -140,7 +119,11 @@ public class AdviceSupport {
         parse();
     }
 
-    public Class<?> getTargetClass() {
+    public void setTarget(Object target) {
+        this.target = target;
+    }
+
+    public Class getTargetClass() {
         return targetClass;
     }
 

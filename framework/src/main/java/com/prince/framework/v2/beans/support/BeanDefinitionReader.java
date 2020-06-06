@@ -38,12 +38,6 @@ public class BeanDefinitionReader {
                 if(clazz.isInterface()){continue;}
                 //保存类对应的全类名ClassName
                 //保存beanName
-//                if(!clazz.isAnnotationPresent(Controller.class) || !clazz.isAnnotationPresent(Service.class)){continue;}
-//                if("" != clazz.getAnnotation(Controller.class).value().trim()){
-//                    result.add(doCreatBeanDefinition(clazz.getAnnotation(Controller.class).value().trim(), clazz.getName()));
-//                }else if("" != clazz.getAnnotation(Service.class).value().trim()){
-//                    result.add(doCreatBeanDefinition(clazz.getAnnotation(Service.class).value().trim(), clazz.getName()));
-//                }else{
                 //默认类名首字母小写
                 result.add(doCreatBeanDefinition(lowerCaseFirst(clazz.getSimpleName()), clazz.getName()));
 //                }

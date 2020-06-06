@@ -48,8 +48,7 @@ public class MethodInvocation implements JoinPoint {
             return this.method.invoke(this.target,this.arguments);
         }
 
-        Object interceptorOrInterceptionAdvice =
-                this.interceptorsAndDynamicMethodMatchers.get(++this.currentInterceptorIndex);
+        Object interceptorOrInterceptionAdvice = this.interceptorsAndDynamicMethodMatchers.get(++this.currentInterceptorIndex);
         //如果要动态匹配joinPoint
         if (interceptorOrInterceptionAdvice instanceof MethodInterceptor) {
 

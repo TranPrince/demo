@@ -3,15 +3,14 @@ package com.prince.framework.v2.context;
 import com.prince.framework.v2.annotation.Autowired;
 import com.prince.framework.v2.annotation.Controller;
 import com.prince.framework.v2.annotation.Service;
+import com.prince.framework.v2.aop.DefaultAopProxyFactory;
 import com.prince.framework.v2.aop.JdkDynamicAopProxy;
-import com.prince.framework.v2.aop.config.AOPConfig;
+import com.prince.framework.v2.aop.config.AopConfig;
 import com.prince.framework.v2.aop.support.AdviceSupport;
 import com.prince.framework.v2.beans.BeanWrapper;
 import com.prince.framework.v2.beans.config.BeanDefinition;
 import com.prince.framework.v2.beans.support.BeanDefinitionReader;
-import jdk.nashorn.internal.runtime.regexp.joni.Config;
 
-import javax.swing.*;
 import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.List;
@@ -28,6 +27,7 @@ public class ApplicationContext {
     private BeanDefinitionReader beanDefinitionReader;
     private Map<String,BeanWrapper> factoryBeanInstanceCache = new HashMap<String, BeanWrapper>();
     private Map<String,Object> factoryBeanObjectCache = new HashMap<String, Object>();
+    private DefaultAopProxyFactory proxyFactory = new DefaultAopProxyFactory();
 
     public ApplicationContext(String... configLocations) {
         //加载配置文件
@@ -127,9 +127,8 @@ public class ApplicationContext {
                 config.setTarget(instance);
 
                 //如果需要织入切面就返回Proxy对象
-
                 if(config.pointCutMath()){
-                    instance = new JdkDynamicAopProxy(config).getProxy();
+                    instance = proxyFactory.createAopProxy(config).getProxy();
                 }
 
                 this.factoryBeanObjectCache.put(beanName, instance);
@@ -141,7 +140,7 @@ public class ApplicationContext {
     }
 
     private AdviceSupport instanceAopConfig(BeanDefinition beanDefinition) {
-        AOPConfig aopConfig = new AOPConfig();
+        AopConfig aopConfig = new AopConfig();
         aopConfig.setPointCut(this.beanDefinitionReader.getConfig().getProperty("pointCut"));
         aopConfig.setAspectClass(this.beanDefinitionReader.getConfig().getProperty("aspectClass"));
         aopConfig.setAspectBefore(this.beanDefinitionReader.getConfig().getProperty("aspectBefore"));

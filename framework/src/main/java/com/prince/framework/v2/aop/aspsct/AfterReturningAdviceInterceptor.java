@@ -9,7 +9,7 @@ import java.lang.reflect.Method;
  * @author Prince
  * @date 2020/5/25 18:07
  */
-public class AfterReturningAdviceInterceptor extends AbstractAspectJAdvice implements MethodInterceptor {
+public class AfterReturningAdviceInterceptor extends AbstractAspectAdvice implements MethodInterceptor {
 
     private JoinPoint jp;
     public AfterReturningAdviceInterceptor(Object aspect, Method adviceMethod) {

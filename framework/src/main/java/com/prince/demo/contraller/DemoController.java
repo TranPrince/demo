@@ -1,7 +1,7 @@
 package com.prince.demo.contraller;
 
 
-import com.prince.demo.service.DemoService;
+import com.prince.demo.service.IDemoService;
 import com.prince.framework.v2.annotation.Autowired;
 import com.prince.framework.v2.annotation.Controller;
 import com.prince.framework.v2.annotation.RequestMapping;
@@ -21,12 +21,12 @@ import java.util.Map;
 public class DemoController {
 
     @Autowired
-    private DemoService demoService;
+    private IDemoService demoService;
 
     @RequestMapping("/query")
     public void query(HttpServletRequest req, HttpServletResponse resp,
                       @RequestParam("name") String name){
-        System.out.println("Welcome!" + demoService.get(name));
+//        System.out.println("Welcome!" + demoService.get(name));
         try {
             resp.getWriter().write("Welcome!" + demoService.get(name));
         } catch (IOException e) {

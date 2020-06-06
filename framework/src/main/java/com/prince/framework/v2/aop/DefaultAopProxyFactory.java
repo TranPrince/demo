@@ -11,7 +11,7 @@ public class DefaultAopProxyFactory {
     public AopProxy createAopProxy(AdviceSupport config){
         Class targetClass = config.getTargetClass();
         if(targetClass.getInterfaces().length > 0){
-            return (AopProxy) new JdkDynamicAopProxy(config);
+            return new JdkDynamicAopProxy(config);
         }
         return new CglibDynamicAopProxy();
     }
