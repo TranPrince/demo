@@ -3,9 +3,7 @@ package com.prince.demo.aspect;
 import com.prince.framework.v2.aop.aspsct.JoinPoint;
 import lombok.extern.slf4j.Slf4j;
 
-/**
- * Created by Tom.
- */
+
 @Slf4j
 public class LogAspect {
 
