@@ -11,6 +11,7 @@
     <modules>
         <module>framework</module>
         <module>prince-utils</module>
+        <module>mybatis</module>
     </modules>
 
 
