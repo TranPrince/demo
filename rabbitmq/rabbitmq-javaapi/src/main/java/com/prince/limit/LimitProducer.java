@@ -6,11 +6,10 @@ import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
 
 /**
- * @Author: qingshan
- * @Date: 2018/9/21 10:52
- * @Description: 咕泡学院，只为更好的你
  * 消息生产者，在启动消费者之后再启动
  * 用于测试消费者限流
+ * @author Prince
+ * @date 2020/6/18 0:54
  */
 public class LimitProducer {
     private final static String QUEUE_NAME = "TEST_LIMIT_QUEUE";

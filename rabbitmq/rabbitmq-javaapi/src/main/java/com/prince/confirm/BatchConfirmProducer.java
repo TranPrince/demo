@@ -7,8 +7,9 @@ import com.rabbitmq.client.ConnectionFactory;
 
 /**
  * 消息生产者，测试Confirm模式
+ *
  * @author Prince
- * @date 2020/6/16 0:55
+ * @date 2020/6/18 0:48
  */
 public class BatchConfirmProducer {
     private final static String QUEUE_NAME = "ORIGIN_QUEUE";
@@ -48,4 +49,3 @@ public class BatchConfirmProducer {
         conn.close();
     }
 }
-

@@ -6,13 +6,13 @@ import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
 
 /**
- * @Author: qingshan
- * @Date: 2018/10/21 16:18
- * @Description: 咕泡学院，只为更好的你
+ *
  * 普通确认模式
+ *
+ * @author Prince
+ * @date 2020/6/18 0:49
  */
 public class NormalConfirmProducer {
-
     private final static String QUEUE_NAME = "ORIGIN_QUEUE";
 
     public static void main(String[] args) throws Exception {

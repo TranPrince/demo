@@ -7,10 +7,10 @@ import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 /**
- * @Author: qingshan
- * @Date: 2018/9/21 10:53
- * @Description: 咕泡学院，只为更好的你
  * 消息消费者，测试消费端限流，先启动
+ * @author Prince
+ * @date 2020/6/18 0:55
+ *
  */
 public class LimitConsumer2 {
     private final static String QUEUE_NAME = "TEST_LIMIT_QUEUE";

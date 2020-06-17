@@ -1,16 +1,15 @@
 package com.prince.rpc;
 
 import com.prince.util.ResourceUtil;
-import com.rabbitmq.client.*;
 import com.rabbitmq.client.AMQP.BasicProperties;
+import com.rabbitmq.client.*;
 
 import java.io.IOException;
 
 /**
- * @Author: qingshan
- * @Date: 2018/9/21 10:52
- * @Description: 咕泡学院，只为更好的你
  * RPC服务端，先启动
+ * @author Prince
+ * @date 2020/6/18 0:54
  */
 public class RPCServer {
     private final static String REQUEST_QUEUE_NAME="RPC_REQUEST";
@@ -31,7 +30,7 @@ public class RPCServer {
         // 创建消费者
         Consumer consumer = new DefaultConsumer(channel) {
             @Override
-            public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties,
+            public void handleDelivery(String consumerTag, Envelope envelope, BasicProperties properties,
                                        byte[] body) throws IOException {
                 BasicProperties replyProperties = new BasicProperties.Builder()
                         .correlationId(properties.getCorrelationId())

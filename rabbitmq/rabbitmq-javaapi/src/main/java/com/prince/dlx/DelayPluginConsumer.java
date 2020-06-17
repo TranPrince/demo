@@ -9,12 +9,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * @Author: qingshan
- * @Date: 2019/01/14 21:56
- * @Description: 咕泡学院，只为更好的你
  *  使用延时插件实现的消息投递-消费者
  *  必须要在服务端安装rabbitmq-delayed-message-exchange插件，安装步骤见README.MD
  *  先启动消费者
+ * @author Prince
+ * @date 2020/6/18 0:51
  */
 public class DelayPluginConsumer {
 

@@ -3,18 +3,19 @@ package com.prince.simple;
 import com.rabbitmq.client.*;
 
 import java.io.IOException;
+import java.util.concurrent.TimeoutException;
 
 /**
- * @Author: qingshan
- * @Date: 2018/9/21 10:53
- * @Description: 咕泡学院，只为更好的你
- * 消息消费者
+ * 消费者
+ *
+ * @author Prince
+ * @date 2020/6/18 0:32
  */
-public class MyConsumer {
+public class Consumer {
     private final static String EXCHANGE_NAME = "SIMPLE_EXCHANGE";
     private final static String QUEUE_NAME = "SIMPLE_QUEUE";
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) throws IOException, TimeoutException {
         ConnectionFactory factory = new ConnectionFactory();
         // 连接IP
         factory.setHost("127.0.0.1");
@@ -41,10 +42,10 @@ public class MyConsumer {
         System.out.println(" Waiting for message....");
 
         // 绑定队列和交换机
-        channel.queueBind(QUEUE_NAME,EXCHANGE_NAME,"gupao.best");
+        channel.queueBind(QUEUE_NAME,EXCHANGE_NAME,"prince.best");
 
         // 创建消费者
-        Consumer consumer = new DefaultConsumer(channel) {
+        com.rabbitmq.client.Consumer consumer = new DefaultConsumer(channel) {
             @Override
             public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties,
                                        byte[] body) throws IOException {
@@ -60,4 +61,3 @@ public class MyConsumer {
         channel.basicConsume(QUEUE_NAME, true, consumer);
     }
 }
-

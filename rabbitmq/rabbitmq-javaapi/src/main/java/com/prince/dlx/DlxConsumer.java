@@ -8,12 +8,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * @Author: qingshan
- * @Date: 2018/9/21 10:53
- * @Description: 咕泡学院，只为更好的你
  * 消息消费者，由于消费的代码被注释掉了，
  * 10秒钟后，消息会从正常队列 TEST_DLX_QUEUE 到达死信交换机 DLX_EXCHANGE ，然后路由到死信队列DLX_QUEUE
- *
+ * @author Prince
+ * @date 2020/6/18 0:53
  */
 public class DlxConsumer {
 

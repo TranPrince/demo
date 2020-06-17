@@ -12,10 +12,11 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 /**
- * 消息生产者，测试Confirm模式
+ *
+ *消息生产者，测试Confirm模式
+ *
  * @author Prince
- * @date 2020/6/16 0:55
- * 参考文章：https://www.cnblogs.com/vipstone/p/9350075.html
+ * @date 2020/6/18 0:47
  */
 public class AsyncConfirmProducer {
     private final static String QUEUE_NAME = "ORIGIN_QUEUE";
@@ -81,4 +82,3 @@ public class AsyncConfirmProducer {
         //conn.close();
     }
 }
-

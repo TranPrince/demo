@@ -7,8 +7,9 @@ import java.io.IOException;
 
 /**
  * 消息消费者，用于测试消费者手工应答和重回队列
+ *
  * @author Prince
- * @date 2020/6/16 0:55
+ * @date 2020/6/18 0:43
  */
 public class AckConsumer {
     private final static String QUEUE_NAME = "TEST_ACK_QUEUE";
@@ -57,6 +58,4 @@ public class AckConsumer {
         // String queue, boolean autoAck, Consumer callback
         channel.basicConsume(QUEUE_NAME, false, consumer);
     }
-
 }
-

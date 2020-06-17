@@ -8,7 +8,7 @@ import com.rabbitmq.client.ConnectionFactory;
 /**
  * 消息生产者，用于测试消费者手工应答和重回队列
  * @author Prince
- * @date 2020/6/16 0:55
+ * @date 2020/6/18 0:43
  */
 public class AckProducer {
     private final static String QUEUE_NAME = "TEST_ACK_QUEUE";
@@ -37,4 +37,3 @@ public class AckProducer {
         conn.close();
     }
 }
-
